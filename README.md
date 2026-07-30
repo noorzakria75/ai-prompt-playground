@@ -3,9 +3,7 @@
 A lightweight, front-end-only playground for drafting and previewing AI prompts — built entirely with **HTML5, CSS3, and vanilla JavaScript**. No frameworks, no libraries, no backend.
 
 ![status](https://img.shields.io/badge/status-complete-8B7CFF) ![stack](https://img.shields.io/badge/stack-HTML%20%7C%20CSS%20%7C%20JS-35E7D7)
-
 ---
-
 ## Overview
 
 **AI Prompt Playground** simulates the front-end experience of a simple AI tool: a user types a prompt, submits it, and sees it rendered in a formatted output card — complete with word count, character count, and a submission timestamp.
