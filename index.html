@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Prompt Playground</title>
+  <meta name="description" content="A lightweight, front-end-only playground for drafting and previewing AI prompts. Built with HTML, CSS, and vanilla JavaScript." />
+
+  <!-- Google Fonts: Space Grotesk (display), Inter (body), JetBrains Mono (data/utility) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Decorative ambient background glow (purely visual, hidden from assistive tech) -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <div class="page">
+
+    <!-- ============ TOP BAR ============ -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">AI Prompt Playground</span>
+      </div>
+      <span class="badge" id="statusBadge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        Idle
+      </span>
+    </header>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <h1>Draft a prompt. See it <span class="text-gradient">rendered instantly.</span></h1>
+      <p class="hero-sub">
+        Type a prompt on the left, submit it, and watch it appear as a formatted
+        card on the right. Everything here runs entirely in your browser.
+      </p>
+    </section>
+
+    <!-- ============ MAIN WORKSPACE ============ -->
+    <main class="workspace">
+
+      <!-- ---------- INPUT DECK ---------- -->
+      <section class="panel input-deck" aria-labelledby="inputDeckHeading">
+        <div class="panel-header">
+          <h2 id="inputDeckHeading">Input Deck</h2>
+          <span class="panel-tag">01</span>
+        </div>
+
+        <form id="promptForm" novalidate>
+          <label for="promptInput" class="field-label">Your prompt</label>
+          <textarea
+            id="promptInput"
+            name="promptInput"
+            class="prompt-textarea"
+            placeholder="e.g. Explain quantum computing to a curious 10-year-old, using a baking analogy..."
+            rows="8"
+            aria-describedby="promptError promptHint"
+          ></textarea>
+
+          <!-- Live validation / helper message -->
+          <p id="promptError" class="field-message" role="alert" aria-live="polite"></p>
+
+          <!-- Quick-start suggestion chips (populated by JS from an array) -->
+          <div class="suggestions">
+            <p id="promptHint" class="suggestions-label">Quick start:</p>
+            <div class="chip-row" id="chipRow"></div>
+          </div>
+
+          <!-- Segmented "signal strength" meter reflecting prompt length -->
+          <div class="signal-meter" aria-hidden="true">
+            <div class="signal-bars" id="signalBars"></div>
+            <span class="signal-caption" id="signalCaption">0 / 500 characters</span>
+          </div>
+
+          <div class="action-row">
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              Submit Prompt
+            </button>
+            <button type="button" class="btn btn-ghost" id="clearBtn">
+              Clear
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ---------- OUTPUT MONITOR ---------- -->
+      <section class="panel output-monitor" aria-labelledby="outputMonitorHeading">
+        <div class="panel-header">
+          <h2 id="outputMonitorHeading">Output Monitor</h2>
+          <span class="panel-tag">02</span>
+        </div>
+
+        <div class="monitor-screen" id="monitorScreen">
+          <!-- Empty state: shown until first valid submission -->
+          <div class="empty-state" id="emptyState">
+            <span class="empty-icon" aria-hidden="true">&#9711;</span>
+            <p>No prompt submitted yet.</p>
+            <p class="empty-sub">Your rendered prompt will appear here.</p>
+          </div>
+
+          <!-- Output card: hidden until a valid prompt is submitted -->
+          <article class="output-card" id="outputCard" hidden>
+            <div class="output-card-header">
+              <span class="output-dot" aria-hidden="true"></span>
+              <span>Your Prompt</span>
+            </div>
+            <p class="output-text" id="outputText"></p>
+            <dl class="output-meta">
+              <div>
+                <dt>Words</dt>
+                <dd id="metaWords">0</dd>
+              </div>
+              <div>
+                <dt>Characters</dt>
+                <dd id="metaChars">0</dd>
+              </div>
+              <div>
+                <dt>Submitted</dt>
+                <dd id="metaTime">--:--:--</dd>
+              </div>
+            </dl>
+          </article>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="page-footer">
+      <p>Built with HTML, CSS &amp; vanilla JavaScript &mdash; no frameworks, no libraries.</p>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

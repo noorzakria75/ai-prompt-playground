@@ -1,0 +1,622 @@
+/* =========================================================
+   AI PROMPT PLAYGROUND — STYLESHEET
+   Design language: "lab instrument" — dark control-room
+   background, glass panels, violet-to-cyan signal accent.
+   ========================================================= */
+
+/* ---------- Design Tokens ---------- */
+:root {
+  /* Color */
+  --bg-void: #0a0b16;
+  --bg-void-2: #0d0f1e;
+  --panel-fill: rgba(255, 255, 255, 0.045);
+  --panel-fill-strong: rgba(255, 255, 255, 0.07);
+  --panel-border: rgba(255, 255, 255, 0.09);
+  --panel-border-strong: rgba(255, 255, 255, 0.16);
+
+  --accent-violet: #8b7cff;
+  --accent-cyan: #35e7d7;
+  --accent-gradient: linear-gradient(120deg, var(--accent-violet), var(--accent-cyan));
+
+  --text-primary: #edeefb;
+  --text-muted: #9195b8;
+  --text-faint: #656a8c;
+
+  --error: #ff7a8a;
+  --error-bg: rgba(255, 122, 138, 0.1);
+
+  /* Type */
+  --font-display: "Space Grotesk", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+
+  /* Layout */
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 8px;
+  --max-width: 1180px;
+}
+
+/* ---------- Reset & Base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Visible, accessible focus ring everywhere */
+:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ---------- Ambient background ---------- */
+.ambient-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(139, 124, 255, 0.16), transparent 45%),
+    radial-gradient(circle at 85% 25%, rgba(53, 231, 215, 0.12), transparent 40%),
+    radial-gradient(circle at 50% 100%, rgba(139, 124, 255, 0.10), transparent 50%),
+    var(--bg-void-2);
+}
+
+/* ---------- Page shell ---------- */
+.page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 28px 24px 40px;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--panel-border);
+  position: relative;
+}
+
+/* Soft gradient glint sitting on the divider, aligned under the brand */
+.topbar::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 140px;
+  height: 1px;
+  background: var(--accent-gradient);
+  opacity: 0.7;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.brand-mark {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--accent-gradient);
+  transform: rotate(45deg);
+  box-shadow: 0 0 14px rgba(139, 124, 255, 0.55);
+}
+
+.brand-text {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--panel-fill);
+  border: 1px solid var(--panel-border);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.badge.is-active .badge-dot {
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+.badge.is-error .badge-dot {
+  background: var(--error);
+  box-shadow: 0 0 8px var(--error);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 40px 4px 42px;
+  max-width: 640px;
+}
+
+.hero h1 {
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.22;
+}
+
+/* Signature gradient-text treatment, used sparingly on one phrase */
+.text-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-sub {
+  margin-top: 12px;
+  color: var(--text-muted);
+  font-size: 0.98rem;
+}
+
+/* ---------- Workspace grid ---------- */
+.workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+@media (max-width: 860px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Glass panel ---------- */
+.panel {
+  position: relative;
+  background: var(--panel-fill);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: border-color 0.25s ease;
+  overflow: hidden;
+}
+
+.panel:hover {
+  border-color: var(--panel-border-strong);
+}
+
+/* Thin gradient accent bar across the top edge of every panel */
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent-gradient);
+  opacity: 0.55;
+}
+
+.panel-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.panel-header h2 {
+  font-size: 1.02rem;
+  font-weight: 600;
+}
+
+.panel-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent-cyan);
+  opacity: 0.75;
+  letter-spacing: 0.05em;
+}
+
+.panel-tag::before {
+  content: "[ ";
+}
+
+.panel-tag::after {
+  content: " ]";
+}
+
+/* ---------- Input deck ---------- */
+#promptForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.prompt-textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 160px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  line-height: 1.55;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.prompt-textarea::placeholder {
+  color: var(--text-faint);
+}
+
+.prompt-textarea:focus-visible {
+  border-color: var(--accent-violet);
+  box-shadow: 0 0 0 3px rgba(139, 124, 255, 0.18);
+  outline: none;
+}
+
+/* Textarea gets a warning ring when validation fails */
+.prompt-textarea.is-invalid {
+  border-color: var(--error);
+  box-shadow: 0 0 0 3px var(--error-bg);
+}
+
+.field-message {
+  font-size: 0.85rem;
+  color: var(--error);
+  min-height: 1.1em;
+}
+
+/* ---------- Suggestion chips ---------- */
+.suggestions-label {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.chip:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-cyan);
+  background: rgba(53, 231, 215, 0.08);
+  transform: translateY(-1px);
+}
+
+/* ---------- Signal meter ---------- */
+.signal-meter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.signal-bars {
+  display: flex;
+  gap: 3px;
+  flex: 1;
+}
+
+.signal-bars span {
+  height: 8px;
+  flex: 1;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  transition: background-color 0.15s ease;
+}
+
+.signal-bars span.is-lit {
+  background: var(--accent-gradient);
+}
+
+.signal-bars span.is-over {
+  background: var(--error);
+}
+
+.signal-caption {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+/* ---------- Buttons ---------- */
+.action-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.btn {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  flex: 1;
+  color: #0a0b16;
+  background: var(--accent-gradient);
+  box-shadow: 0 8px 22px rgba(139, 124, 255, 0.25);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 10px 30px rgba(53, 231, 215, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+}
+
+.btn-ghost {
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--panel-border);
+}
+
+.btn-ghost:hover {
+  color: var(--text-primary);
+  border-color: var(--panel-border-strong);
+}
+
+/* ---------- Output monitor ---------- */
+@property --scan-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.monitor-screen {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--panel-border);
+  padding: 24px;
+  min-height: 260px;
+  isolation: isolate;
+}
+
+/* Signature element: a slow, rotating gradient ring traces the
+   monitor's edge, evoking a live instrument reading a signal.
+   Built with a conic-gradient masked down to a 1.5px ring. */
+.monitor-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--scan-angle),
+    transparent 0deg,
+    var(--accent-cyan) 25deg,
+    transparent 70deg,
+    transparent 290deg,
+    var(--accent-violet) 335deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: scan-rotate 7s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes scan-rotate {
+  to {
+    --scan-angle: 360deg;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-faint);
+}
+
+.empty-icon {
+  display: inline-block;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+  color: var(--accent-violet);
+  opacity: 0.6;
+}
+
+.empty-sub {
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* ---------- Output card ---------- */
+.output-card {
+  width: 100%;
+  background: var(--panel-fill-strong);
+  border: 1px solid var(--panel-border-strong);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  animation: card-in 0.35s ease;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.output-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-cyan);
+  margin-bottom: 12px;
+}
+
+.output-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+}
+
+.output-text {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.output-meta {
+  display: flex;
+  gap: 22px;
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--panel-border);
+}
+
+.output-meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.output-meta dt {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.output-meta dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+/* ---------- Footer ---------- */
+.page-footer {
+  text-align: center;
+  margin-top: 36px;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .output-card {
+    animation: none;
+  }
+  .chip:hover {
+    transform: none;
+  }
+  .monitor-screen::before {
+    animation: none;
+  }
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 480px) {
+  .page {
+    padding: 20px 16px 32px;
+  }
+  .action-row {
+    flex-direction: column;
+  }
+  .output-meta {
+    flex-wrap: wrap;
+    row-gap: 10px;
+  }
+}
